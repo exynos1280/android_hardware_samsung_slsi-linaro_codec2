@@ -56,6 +56,8 @@ cc_library_static {
         default: [],
     }) + select(soong_config_variable("openmax", "USE_FLEXIBLE_P010"), {
         "true": ["-DUSE_FLEXIBLE_P010"],
+    }) + select(soong_config_variable("openmax", "legacy_mfc"), {
+        "true": ["-DLEGACY_MFC"],
         default: [],
     }),
     header_libs: [
