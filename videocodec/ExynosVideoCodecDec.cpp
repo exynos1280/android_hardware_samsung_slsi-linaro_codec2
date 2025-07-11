@@ -319,7 +319,11 @@ ExynosVideoErrorType ExynosVideoCodecDec::CodecDecImpl::setOperatingRate(uint32_
         return VIDEO_ERROR_BADPARAM;
     }
 
+#ifndef LEGACY_MFC
     return std::get<ExynosVideoDecOps>(mCommonOps).Set_OperatingRate(mHandle, framerate);
+#else
+    return VIDEO_ERROR_NONE;
+#endif
 }
 
 ExynosVideoErrorType ExynosVideoCodecDec::CodecDecImpl::setRealTimePriority(uint32_t realTimePriority) {
@@ -330,7 +334,11 @@ ExynosVideoErrorType ExynosVideoCodecDec::CodecDecImpl::setRealTimePriority(uint
         return VIDEO_ERROR_BADPARAM;
     }
 
+#ifndef LEGACY_MFC
     return std::get<ExynosVideoDecOps>(mCommonOps).Set_RealTimePriority(mHandle, realTimePriority);
+#else
+    return VIDEO_ERROR_NONE;
+#endif
 }
 
 ExynosErrorType ExynosVideoCodecDec::CodecDecImpl::checkRealTimeResource(

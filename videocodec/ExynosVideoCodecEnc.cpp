@@ -652,7 +652,11 @@ ExynosVideoErrorType ExynosVideoCodecEnc::CodecEncImpl::setOperatingRate(uint32_
         return VIDEO_ERROR_BADPARAM;
     }
 
+#ifndef LEGACY_MFC
     return std::get<ExynosVideoEncOps>(mCommonOps).Set_OperatingRate(mHandle, framerate);
+#else
+    return VIDEO_ERROR_NONE;
+#endif
 }
 
 ExynosVideoErrorType ExynosVideoCodecEnc::CodecEncImpl::setRealTimePriority(uint32_t realTimePriority) {
@@ -663,7 +667,11 @@ ExynosVideoErrorType ExynosVideoCodecEnc::CodecEncImpl::setRealTimePriority(uint
         return VIDEO_ERROR_BADPARAM;
     }
 
+#ifndef LEGACY_MFC
     return std::get<ExynosVideoEncOps>(mCommonOps).Set_RealTimePriority(mHandle, realTimePriority);
+#else
+    return VIDEO_ERROR_NONE;
+#endif
 }
 
 ExynosVideoErrorType ExynosVideoCodecEnc::CodecEncImpl::setIFrameRatio(uint32_t ratio) {
@@ -798,6 +806,7 @@ ExynosErrorType ExynosVideoCodecEnc::CodecEncImpl::checkRealTimeResource(
         return EXYNOS_ERROR_UNKNOWN;
     }
 
+#ifndef LEGACY_MFC
     if (std::get<ExynosVideoEncOps>(mCommonOps).Set_RealTimePriority(mHandle, 0 /* real time */) != VIDEO_ERROR_NONE) {
         ExynosLogE("[%s] Set_RealTimePriority for real time resource is failed", __FUNCTION__);
         return EXYNOS_ERROR_UNKNOWN;
@@ -812,6 +821,7 @@ ExynosErrorType ExynosVideoCodecEnc::CodecEncImpl::checkRealTimeResource(
         ExynosLogE("[%s] Get_RealTimePriority for real time resource is failed", __FUNCTION__);
         return EXYNOS_ERROR_UNKNOWN;
     }
+#endif
 
     return EXYNOS_ERROR_NONE;
 }
@@ -1485,9 +1495,12 @@ void ExynosVideoCodecEnc::applyConfig_OperatingRate(ExynosParams &params) {
 
         if (err == VIDEO_ERROR_NONE) {
             ExynosLogD("[%s] operating rate is %d", __FUNCTION__, param->m.value);
-        } else {
+        }
+#ifndef LEGACY_MFC
+        else {
             ExynosLogE("[%s] Set_OperatingRate(%d) is failed", __FUNCTION__, param->m.value);
         }
+#endif
     }
 }
 
